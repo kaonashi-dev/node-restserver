@@ -1,4 +1,7 @@
 const express = require('express');
+const cors = require('cors');
+
+const userRouter = require('../routes/user');
 
 class Server {
 
@@ -14,19 +17,23 @@ class Server {
    }
 
    middlewares() {
+
+      this.app.use(cors());
+
+      this.app.use(express.json());
+
       this.app.use(express.static('public'))
+
    }
 
    routes() {
 
-      this.app.get('/api', (req, res) => {
-         res.send('Hello...')
-      });
-      
+      this.app.use('/api/user', userRouter);
+
    }
 
    listen() {
-      this.app.listen(this.port, () => console.log('server ok'))
+      this.app.listen(this.port, () => console.log('server on port', this.port))
    }
 }
 
